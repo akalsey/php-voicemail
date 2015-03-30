@@ -1,9 +1,9 @@
-= PHP Voicemail with Tropo
+# PHP Voicemail with Tropo
 
 Copyright (c) 2015 Adam Kalsey. Released under MIT license. See LICENSE file for
 details.
 
-== Introduction
+## Introduction
 
 PHP Voicemail is a simple voicemail script designed for people who would like a
 second phone number that functions as a voicemail box. Use cases envisioned are
@@ -15,7 +15,7 @@ Messages transcribed and emailed as a WAV file with transcription to you using
 your mail server. [Tropo](http://tropo.com) is used to provide the phone and
 transcription services.
 
-== Setting up
+## Setting up
 
 Dependancies are installed using Composer. From the command line, change to the
 php-voicemail directory and run `composer install` to install dependancies.
@@ -51,7 +51,7 @@ Choose a phone number and click "Create App".
 Wait a moment or two for your number to be provisioned and give it a call. Leave
 a message and you'll get a voicemail delivered to your email box.
 
-== Config Glossary
+## Config Glossary
 
 * *mailserver*: (required) The email server's hostname. Probably something like
 smtp.example.com
