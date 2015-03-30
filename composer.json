@@ -1,0 +1,8 @@
+{
+    "require": {
+        "slim/slim": "~2.6",
+        "slim/extras": "*",
+        "phpmailer/phpmailer": "~5.2",
+        "hassankhan/config": "~0.8"
+    }
+}

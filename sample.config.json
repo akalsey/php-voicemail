@@ -1,0 +1,11 @@
+{
+	"mailserver":"",
+	"mailport":"",
+	"mailuser":"",
+	"mailpassword":"",
+	"mailtls": true,
+	"mailfrom":"",
+	"mailto":"",
+	"greeting":"",
+	"transfer":""
+}

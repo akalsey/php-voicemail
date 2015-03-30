@@ -1,0 +1,5 @@
+composer.lock
+vendor/
+config.json
+audio/*.wav
+audio/*.txt
