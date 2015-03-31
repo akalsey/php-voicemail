@@ -63,46 +63,54 @@ $app->get('/tropo.php', function () {
 	$conf = Config::load('config.json');
 
 	$baseurl = myurl($_SERVER) . '/' . basename(dirname($_SERVER['PHP_SELF']));
+	$ring = "$baseurl/ring.wav"
 	$greeting = $conf->get('greeting');
-	if (empty($greeting)) {
-    $greeting = "<speak><say-as interpret-as='vxml:digits'>{\$currentCall->called}</say-as> is not available. Leave a message after the beep</speak>";
-  }
-
 	$transfer = $conf->get('transfer');
+
+	if (empty($greeting)) {
+		$greeting = 'The person at $mynum is not available. Leave a message after the beep';
+  }
 
 	print <<< EOF
 <?php
-\$callerID = \$currentCall->callerID;
-\$time = date('Y-m-d-Gis');
-\$id = \$callerID . '-' . \$time;
-\$ring = "$baseurl/ring.wav";
-
-\$transfer = $transfer;
-
-if (!empty(\$transfer)) {
-	\$result = transfer(\$transfer, array(
-		'playvalue' => \$ring,
-		'playrepeat' => 2000,
-		'timeout' => 200,
-		'onTimeout' => voicemail(\$id)
-		));
-
+if (\$currentCall->channel == 'TEXT') {
+  say('This number cannot receive text messages');
 } else {
-	voicemail(\$id);
+  \$callerID = \$currentCall->callerID;
+  \$time = date('Y-m-d-His');
+  \$id = \$callerID . '-' . \$time;
+
+  \$mynum = implode(' ',str_split(\$currentCall->calledID));
+  \$greeting = "$greeting";
+
+  \$transfer = '$transfer';
+  if (empty(\$transfer)) {
+    voicemail();
+  } else {
+    \$result = transfer(\$transfer, array(
+      'playvalue' => "$ring",
+      'playrepeat' => 2000,
+      'timeout' => 20,
+      'onTimeout' => "voicemail",
+      'onBusy' => "voicemail",
+      'onError' => "voicemail",
+      'onCallFailure' => "voicemail",
+      ));
+  }
 }
 
-
-function voicemail(\$id) {
-	record("$greeting", array (
-		"beep" => true,
-		"maxTime" => 900,
-		"recordURI"=>"$baseurl/message/\$id",
-		"transcriptionOutURI" => "$baseurl/transcription/\$id",
-		"transcriptionID" => "\$id"
-		)
-	);
+function voicemail() {
+  record(\$GLOBALS['greeting'], array (
+    "beep" => true,
+    "maxTime" => 900,
+    "bargein" => false,
+    "recordURI"=>"$baseurl/message/{\$GLOBALS['id']}",
+    "transcriptionOutURI" => "$baseurl/transcription/{\$GLOBALS['id']}",
+    "transcriptionID" => \$GLOBALS['id'],
+    "voice" => "Veronica"
+    )
+  );
 }
-
 ?>
 EOF;
 });
